@@ -63,7 +63,7 @@
         to { transform: scale(1); opacity: 1; }
       }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
     "react": "https://aistudiocdn.com/react@^19.2.0",
@@ -290,7 +290,7 @@
                   <div className="relative">
                      <input
                       type="date"
-                      className="w-full p-3 border rounded-xl bg-slate-50 text-xl font-bold text-center focus:ring-2 focus:ring-[#4F9D9D] outline-none text-slate-800"
+                      className="w-full h-14 p-3 border rounded-xl bg-slate-50 text-xl font-bold text-center focus:ring-2 focus:ring-[#4F9D9D] outline-none text-slate-800 appearance-none"
                       value={dateValue}
                       onChange={handleDateChange}
                     />
@@ -299,7 +299,7 @@
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 block">上課時間 Time</label>
                   <div className="relative">
-                    <input type="time" className="w-full p-3 border rounded-xl bg-slate-50 text-xl font-bold text-center focus:ring-2 focus:ring-[#4F9D9D] outline-none text-slate-800" value={checkInTime} onChange={(e) => setCheckInTime(e.target.value)} />
+                    <input type="time" className="w-full h-14 p-3 border rounded-xl bg-slate-50 text-xl font-bold text-center focus:ring-2 focus:ring-[#4F9D9D] outline-none text-slate-800 appearance-none" value={checkInTime} onChange={(e) => setCheckInTime(e.target.value)} />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3 pt-2">
@@ -327,14 +327,14 @@
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">日期 Date</label>
                     <div className="relative mt-1">
                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Icon name="Calendar" size={18} /></span>
-                       <input type="date" className="w-full pl-10 p-3 border rounded-xl bg-slate-50 text-sm font-bold focus:ring-2 focus:ring-amber-500 outline-none text-slate-800" value={payDate} onChange={(e) => setPayDate(e.target.value)} />
+                       <input type="date" className="w-full h-12 pl-10 p-3 border rounded-xl bg-slate-50 text-sm font-bold focus:ring-2 focus:ring-amber-500 outline-none text-slate-800 appearance-none" value={payDate} onChange={(e) => setPayDate(e.target.value)} />
                     </div>
                   </div>
                   <div>
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">金額 Tuition</label>
                     <div className="relative mt-1">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
-                      <input type="number" inputMode="numeric" className="w-full pl-8 p-3 border rounded-xl bg-slate-50 text-sm font-bold focus:ring-2 focus:ring-amber-500 outline-none" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
+                      <input type="number" inputMode="numeric" className="w-full h-12 pl-8 p-3 border rounded-xl bg-slate-50 text-sm font-bold focus:ring-2 focus:ring-amber-500 outline-none appearance-none" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
                     </div>
                   </div>
                 </div>
@@ -343,7 +343,7 @@
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">備註 Note</label>
                   <div className="relative mt-1">
                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><Icon name="Edit" size={16} /></span>
-                     <input type="text" placeholder="選填 (Optional)" className="w-full pl-10 p-3 border rounded-xl bg-slate-50 text-sm font-bold focus:ring-2 focus:ring-amber-500 outline-none text-slate-800 placeholder:font-normal" value={payNote} onChange={(e) => setPayNote(e.target.value)} />
+                     <input type="text" placeholder="選填 (Optional)" className="w-full h-12 pl-10 p-3 border rounded-xl bg-slate-50 text-sm font-bold focus:ring-2 focus:ring-amber-500 outline-none text-slate-800 placeholder:font-normal appearance-none" value={payNote} onChange={(e) => setPayNote(e.target.value)} />
                   </div>
                 </div>
                 
