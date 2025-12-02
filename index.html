@@ -63,13 +63,13 @@
         to { transform: scale(1); opacity: 1; }
       }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
   }
 }
 </script>
@@ -317,7 +317,7 @@
                     <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">金額 Tuition</label>
                     <div className="relative mt-1">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
-                      <input type="number" inputMode="numeric" className="w-full pl-8 p-3 border rounded-xl bg-slate-50 text-xl font-bold focus:ring-2 focus:ring-amber-500 outline-none" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
+                      <input type="number" inputMode="numeric" className="w-full pl-8 p-3 border rounded-xl bg-slate-50 text-sm font-bold focus:ring-2 focus:ring-amber-500 outline-none" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
                     </div>
                   </div>
                 </div>
