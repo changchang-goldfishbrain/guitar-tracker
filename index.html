@@ -63,13 +63,13 @@
         to { transform: scale(1); opacity: 1; }
       }
     </style>
-<script type="importmap">
+  <script type="importmap">
 {
   "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
   }
 }
 </script>
@@ -260,8 +260,20 @@
         );
       };
 
-      const CheckInModal = ({ isOpen, onClose, checkInDate, checkInTime, setCheckInTime, onConfirm }) => {
+      const CheckInModal = ({ isOpen, onClose, checkInDate, setCheckInDate, checkInTime, setCheckInTime, onConfirm }) => {
         if (!isOpen) return null;
+        
+        const dateValue = checkInDate 
+          ? `${checkInDate.getFullYear()}-${String(checkInDate.getMonth() + 1).padStart(2, '0')}-${String(checkInDate.getDate()).padStart(2, '0')}`
+          : '';
+
+        const handleDateChange = (e) => {
+          if (e.target.value) {
+            const [y, m, d] = e.target.value.split('-').map(Number);
+            setCheckInDate(new Date(y, m - 1, d));
+          }
+        };
+
         return (
           <div className="fixed inset-0 bg-slate-900/40 z-50 flex items-end sm:items-center justify-center sm:p-4 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="bg-white rounded-t-3xl sm:rounded-2xl w-full max-w-sm p-6 shadow-2xl animate-in slide-in-from-bottom-10 sm:slide-in-from-bottom-0">
@@ -273,11 +285,16 @@
                 <button onClick={onClose} className="p-1 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200"><Icon name="X" size={18} /></button>
               </div>
               <div className="space-y-6">
-                <div className="bg-slate-50 p-3 rounded-xl text-center">
-                   <div className="text-xs text-slate-500 mb-1">日期</div>
-                   <div className="text-base font-bold text-slate-800">
-                      {checkInDate?.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
-                   </div>
+                <div>
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 block">日期 Date</label>
+                  <div className="relative">
+                     <input
+                      type="date"
+                      className="w-full p-3 border rounded-xl bg-slate-50 text-xl font-bold text-center focus:ring-2 focus:ring-[#4F9D9D] outline-none text-slate-800"
+                      value={dateValue}
+                      onChange={handleDateChange}
+                    />
+                  </div>
                 </div>
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 block">上課時間 Time</label>
@@ -510,7 +527,7 @@
               </div>
               <PaymentHistory payments={data.payments} onDeletePayment={deletePayment} />
             </main>
-            <CheckInModal isOpen={showCheckInModal} onClose={() => setShowCheckInModal(false)} checkInDate={checkInDate} checkInTime={checkInTime} setCheckInTime={setCheckInTime} onConfirm={confirmCheckIn} />
+            <CheckInModal isOpen={showCheckInModal} onClose={() => setShowCheckInModal(false)} checkInDate={checkInDate} setCheckInDate={setCheckInDate} checkInTime={checkInTime} setCheckInTime={setCheckInTime} onConfirm={confirmCheckIn} />
             <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} data={data} onUpdateSettings={updateSettings} onImportData={handleImportData} />
             <PaymentModal isOpen={showPayModal} onClose={() => setShowPayModal(false)} payDate={payDate} setPayDate={setPayDate} payAmount={payAmount} setPayAmount={setPayAmount} payMethod={payMethod} setPayMethod={setPayMethod} payNote={payNote} setPayNote={setPayNote} onConfirm={recordPayment} isDuplicate={isPaymentDuplicate()} />
           </div>
