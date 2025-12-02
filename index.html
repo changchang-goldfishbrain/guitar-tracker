@@ -85,15 +85,19 @@
       const { createRoot } = ReactDOM;
       
       // --- ICON SETUP ---
-      const LucideIcons = window.lucideReact || {};
+      // Fix: Check both window.lucideReact and window.lucide for the library
+      const LucideIcons = window.lucideReact || window.lucide || {};
+      
       const Icon = ({ name, size = 24, className, ...props }) => {
         const Component = LucideIcons[name];
         if (!Component) {
+          // Fallback aliases
           if (name === 'CalendarDays' && LucideIcons['Calendar']) {
              const Fallback = LucideIcons['Calendar'];
              return <Fallback size={size} className={className} {...props} />;
           }
-          return null;
+          // Debug fallback
+          return <span style={{display:'inline-block', width: size, height: size, background: '#eee'}} title={name}></span>;
         }
         return <Component size={size} className={className} {...props} />;
       };
@@ -220,9 +224,9 @@
           <div className="fixed inset-0 bg-slate-900/40 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-bold">設定</h3>
+                <h3 className="text-xl font-bold">設定</h3>
                 <button onClick={onClose} className="text-slate-400 hover:text-slate-600">
-                  <X size={24} />
+                  <X size={28} />
                 </button>
               </div>
               <form onSubmit={(e) => {
@@ -230,32 +234,32 @@
                 const formData = new FormData(e.currentTarget);
                 onUpdateSettings(formData.get("teacher"), formData.get("student"));
               }}>
-                <div className="space-y-4">
+                <div className="space-y-5">
                   <div>
-                    <label className="block text-sm font-medium text-slate-600 mb-1">老師姓名</label>
-                    <input name="teacher" defaultValue={data.teacherName} className="w-full p-3 border rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-slate-200" />
+                    <label className="block text-base font-medium text-slate-600 mb-2">老師姓名</label>
+                    <input name="teacher" defaultValue={data.teacherName} className="w-full p-3.5 border rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-slate-200 text-lg" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-600 mb-1">學生姓名</label>
-                    <input name="student" defaultValue={data.studentName} className="w-full p-3 border rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-slate-200" />
+                    <label className="block text-base font-medium text-slate-600 mb-2">學生姓名</label>
+                    <input name="student" defaultValue={data.studentName} className="w-full p-3.5 border rounded-xl bg-slate-50 outline-none focus:ring-2 focus:ring-slate-200 text-lg" />
                   </div>
-                  <div className="pt-2 border-t border-slate-100 mt-4">
-                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">資料管理 Data Backup</h4>
-                     <div className="grid grid-cols-2 gap-3">
-                       <button type="button" onClick={exportData} className="flex flex-col items-center justify-center p-3 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors gap-1 text-slate-700">
-                         <Download size={18} />
-                         <span className="text-xs font-bold">匯出備份</span>
+                  <div className="pt-4 border-t border-slate-100 mt-6">
+                     <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">資料管理 Data Backup</h4>
+                     <div className="grid grid-cols-2 gap-4">
+                       <button type="button" onClick={exportData} className="flex flex-col items-center justify-center p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors gap-2 text-slate-700">
+                         <Download size={24} />
+                         <span className="text-sm font-bold">匯出備份</span>
                        </button>
                        <div className="relative">
                           <input type="file" ref={fileInputRef} accept=".json" onChange={handleFileUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
-                          <button type="button" className="w-full h-full flex flex-col items-center justify-center p-3 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors gap-1 text-slate-700 pointer-events-none">
-                            <Upload size={18} />
-                            <span className="text-xs font-bold">匯入還原</span>
+                          <button type="button" className="w-full h-full flex flex-col items-center justify-center p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors gap-2 text-slate-700 pointer-events-none">
+                            <Upload size={24} />
+                            <span className="text-sm font-bold">匯入還原</span>
                           </button>
                        </div>
                      </div>
                   </div>
-                  <button type="submit" className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold mt-2">儲存設定</button>
+                  <button type="submit" className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold mt-4 text-lg">儲存設定</button>
                 </div>
               </form>
             </div>
@@ -270,25 +274,25 @@
             <div className="bg-white rounded-t-3xl sm:rounded-2xl w-full max-w-sm p-6 shadow-2xl animate-in slide-in-from-bottom-10 sm:slide-in-from-bottom-0">
                <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center gap-2 text-[#4F9D9D]">
-                  <Clock size={20} />
-                  <h3 className="text-lg font-bold text-slate-800">上課簽到</h3>
+                  <Clock size={24} />
+                  <h3 className="text-xl font-bold text-slate-800">上課簽到</h3>
                 </div>
-                <button onClick={onClose} className="p-1 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200"><X size={18} /></button>
+                <button onClick={onClose} className="p-2 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200"><X size={24} /></button>
               </div>
               <div className="space-y-6">
-                <div className="bg-slate-50 p-3 rounded-xl text-center">
-                   <div className="text-xs text-slate-500 mb-1">日期</div>
-                   <div className="text-base font-bold text-slate-800">
+                <div className="bg-slate-50 p-4 rounded-xl text-center">
+                   <div className="text-sm text-slate-500 mb-1">日期</div>
+                   <div className="text-xl font-bold text-slate-800">
                       {checkInDate?.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' })}
                    </div>
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 block">上課時間 Time</label>
-                  <input type="time" className="w-full p-3 border rounded-xl bg-slate-50 text-xl font-bold text-center focus:ring-2 focus:ring-[#4F9D9D] outline-none text-slate-800" value={checkInTime} onChange={(e) => setCheckInTime(e.target.value)} />
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">上課時間 Time</label>
+                  <input type="time" className="w-full p-4 border rounded-xl bg-slate-50 text-3xl font-bold text-center focus:ring-2 focus:ring-[#4F9D9D] outline-none text-slate-800" value={checkInTime} onChange={(e) => setCheckInTime(e.target.value)} />
                 </div>
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                   <button onClick={onClose} className="py-3 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition-colors text-sm">取消</button>
-                   <button onClick={onConfirm} className="py-3 bg-[#4F9D9D] text-white rounded-xl font-bold shadow-lg shadow-[#4F9D9D]/30 active:scale-95 transition-transform text-sm">確認簽到 (-1)</button>
+                <div className="grid grid-cols-2 gap-4 pt-2">
+                   <button onClick={onClose} className="py-4 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition-colors text-base">取消</button>
+                   <button onClick={onConfirm} className="py-4 bg-[#4F9D9D] text-white rounded-xl font-bold shadow-lg shadow-[#4F9D9D]/30 active:scale-95 transition-transform text-base">確認簽到 (-1)</button>
                 </div>
               </div>
             </div>
@@ -302,36 +306,36 @@
           <div className="fixed inset-0 bg-slate-900/40 z-50 flex items-end sm:items-center justify-center sm:p-4 backdrop-blur-sm animate-in fade-in duration-200">
             <div className="bg-white rounded-t-3xl sm:rounded-2xl w-full max-w-sm p-6 shadow-2xl animate-in slide-in-from-bottom-10 sm:slide-in-from-bottom-0">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-bold">紀錄繳費</h3>
-                <button onClick={onClose} className="p-1 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200"><X size={20} /></button>
+                <h3 className="text-xl font-bold">紀錄繳費</h3>
+                <button onClick={onClose} className="p-2 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200"><X size={24} /></button>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">日期 Date</label>
-                  <div className="relative mt-1">
-                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><CalendarIcon size={18} /></span>
-                     <input type="date" className="w-full pl-10 p-3 border rounded-xl bg-slate-50 text-base font-bold focus:ring-2 focus:ring-amber-500 outline-none text-slate-800" value={payDate} onChange={(e) => setPayDate(e.target.value)} />
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">日期 Date</label>
+                  <div className="relative mt-2">
+                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"><CalendarIcon size={20} /></span>
+                     <input type="date" className="w-full pl-12 p-4 border rounded-xl bg-slate-50 text-lg font-bold focus:ring-2 focus:ring-amber-500 outline-none text-slate-800" value={payDate} onChange={(e) => setPayDate(e.target.value)} />
                   </div>
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">金額 Tuition</label>
-                  <div className="relative mt-1">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
-                    <input type="number" inputMode="numeric" className="w-full pl-8 p-3 border rounded-xl bg-slate-50 text-xl font-bold focus:ring-2 focus:ring-amber-500 outline-none" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">金額 Tuition</label>
+                  <div className="relative mt-2">
+                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-lg">$</span>
+                    <input type="number" inputMode="numeric" className="w-full pl-10 p-4 border rounded-xl bg-slate-50 text-2xl font-bold focus:ring-2 focus:ring-amber-500 outline-none" value={payAmount} onChange={(e) => setPayAmount(e.target.value)} />
                   </div>
                 </div>
                 <div>
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 block">方式 Method</label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">方式 Method</label>
+                  <div className="grid grid-cols-2 gap-3">
                     {["Cash", "BankTransfer", "LineBank"].map(m => (
-                      <button key={m} onClick={() => setPayMethod(m)} className={`p-3 rounded-xl border font-bold text-center text-sm transition-all ${payMethod === m ? "bg-amber-50 border-amber-500 text-amber-700 ring-1 ring-amber-500" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300"} ${m === "Cash" ? "col-span-2" : ""}`}>
+                      <button key={m} onClick={() => setPayMethod(m)} className={`p-4 rounded-xl border font-bold text-center text-base transition-all ${payMethod === m ? "bg-amber-50 border-amber-500 text-amber-700 ring-1 ring-amber-500" : "bg-white border-slate-200 text-slate-400 hover:border-slate-300"} ${m === "Cash" ? "col-span-2" : ""}`}>
                         {m === "Cash" ? "現金 Cash" : m === "BankTransfer" ? "銀行轉帳" : "Line Bank"}
                       </button>
                     ))}
                   </div>
                 </div>
                 <div className="pt-2">
-                  <button onClick={onConfirm} disabled={isDuplicate} className={`w-full py-3 rounded-xl font-bold transition-all text-sm ${isDuplicate ? "bg-slate-200 text-slate-400 cursor-not-allowed" : "bg-amber-500 text-white shadow-lg shadow-amber-200 active:scale-95 active:shadow-none"}`}>{isDuplicate ? "本日已繳費" : "確認入帳 (+4 堂)"}</button>
+                  <button onClick={onConfirm} disabled={isDuplicate} className={`w-full py-4 rounded-xl font-bold transition-all text-base ${isDuplicate ? "bg-slate-200 text-slate-400 cursor-not-allowed" : "bg-amber-500 text-white shadow-lg shadow-amber-200 active:scale-95 active:shadow-none"}`}>{isDuplicate ? "本日已繳費" : "確認入帳 (+4 堂)"}</button>
                 </div>
               </div>
             </div>
@@ -347,18 +351,18 @@
           const daysInMonth = new Date(year, month + 1, 0).getDate();
           const firstDayOfMonth = new Date(year, month, 1).getDay();
           const days = [];
-          for (let i = 0; i < firstDayOfMonth; i++) days.push(<div key={`pad-${i}`} className="h-14 bg-slate-50/50 border-t border-r border-slate-100"></div>);
+          for (let i = 0; i < firstDayOfMonth; i++) days.push(<div key={`pad-${i}`} className="h-16 bg-slate-50/50 border-t border-r border-slate-100"></div>);
           for (let d = 1; d <= daysInMonth; d++) {
             const currentDay = new Date(year, month, d);
             const isToday = isSameDay(currentDay, new Date());
             const lessonToday = data.lessons.find(l => isSameDay(new Date(l.date), currentDay));
             const paymentsToday = data.payments.filter(p => isSameDay(new Date(p.date), currentDay));
             days.push(
-              <button key={`day-${d}`} onClick={() => onToggleLesson(currentDay)} className={`h-14 relative border-t border-r border-slate-100 p-0.5 transition-all flex flex-col items-center justify-start group active:bg-slate-100 ${isToday ? "bg-amber-50" : "hover:bg-slate-50"} ${d === 1 || days.length % 7 === 0 ? "border-l" : ""}`}>
-                <div className="w-full flex justify-start pl-0.5"><span className={`text-[9px] font-medium w-3.5 h-3.5 flex items-center justify-center rounded-full ${isToday ? "bg-amber-500 text-white" : "text-slate-400"}`}>{d}</span></div>
-                <div className="flex flex-col items-center w-full -mt-1">{lessonToday && (<div className="flex flex-col items-center animate-in zoom-in duration-200"><div className="w-4 h-4 rounded-full bg-[#4F9D9D] text-white flex items-center justify-center shadow-sm mb-0"><Check size={10} strokeWidth={3} /></div><span className="text-[8px] text-slate-400 font-medium leading-none tracking-tight scale-90 origin-top mt-0.5">{formatTime(lessonToday.date)}</span></div>)}</div>
-                <div className="absolute bottom-0.5 right-0.5 flex flex-col gap-0.5 items-end">{paymentsToday.map(p => (<div key={p.id} className="w-3 h-3 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center border border-amber-200 shadow-sm"><span className="text-[7px] font-bold">$</span></div>))}</div>
-                {!lessonToday && !paymentsToday.length && (<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none mt-2"><Plus size={14} className="text-slate-300" /></div>)}
+              <button key={`day-${d}`} onClick={() => onToggleLesson(currentDay)} className={`h-16 relative border-t border-r border-slate-100 p-0.5 transition-all flex flex-col items-center justify-start group active:bg-slate-100 ${isToday ? "bg-amber-50" : "hover:bg-slate-50"} ${d === 1 || days.length % 7 === 0 ? "border-l" : ""}`}>
+                <div className="w-full flex justify-start pl-1 pt-1"><span className={`text-xs font-medium w-5 h-5 flex items-center justify-center rounded-full ${isToday ? "bg-amber-500 text-white" : "text-slate-400"}`}>{d}</span></div>
+                <div className="flex flex-col items-center w-full -mt-2">{lessonToday && (<div className="flex flex-col items-center animate-in zoom-in duration-200"><div className="w-5 h-5 rounded-full bg-[#4F9D9D] text-white flex items-center justify-center shadow-sm mb-0.5"><Check size={14} strokeWidth={3} /></div><span className="text-[10px] text-slate-400 font-medium leading-none tracking-tight scale-90 origin-top">{formatTime(lessonToday.date)}</span></div>)}</div>
+                <div className="absolute bottom-1 right-1 flex flex-col gap-0.5 items-end">{paymentsToday.map(p => (<div key={p.id} className="w-4 h-4 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center border border-amber-200 shadow-sm"><span className="text-[9px] font-bold">$</span></div>))}</div>
+                {!lessonToday && !paymentsToday.length && (<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none mt-2"><Plus size={18} className="text-slate-300" /></div>)}
               </button>
             );
           }
@@ -366,19 +370,19 @@
         };
         return (
           <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden shrink-0">
-            <div className="bg-slate-50 px-2 py-1.5 flex items-center justify-between border-b border-slate-100">
-              <div className="font-bold text-xs text-slate-700 flex items-center gap-1.5"><CalendarIcon size={14} className="text-amber-500" />{viewDate.getFullYear()} 年 {viewDate.getMonth() + 1} 月</div>
-              <div className="flex gap-0.5">
-                <button onClick={() => changeMonth(-1)} className="p-1 hover:bg-white rounded-md transition-colors text-slate-500"><ChevronLeft size={16} /></button>
-                <button onClick={() => setViewDate(new Date())} className="px-2 text-[10px] font-bold text-slate-500 hover:bg-white rounded-md">今天</button>
-                <button onClick={() => changeMonth(1)} className="p-1 hover:bg-white rounded-md transition-colors text-slate-500"><ChevronRight size={16} /></button>
+            <div className="bg-slate-50 px-3 py-3 flex items-center justify-between border-b border-slate-100">
+              <div className="font-bold text-base text-slate-700 flex items-center gap-2"><CalendarIcon size={18} className="text-amber-500" />{viewDate.getFullYear()} 年 {viewDate.getMonth() + 1} 月</div>
+              <div className="flex gap-1">
+                <button onClick={() => changeMonth(-1)} className="p-1.5 hover:bg-white rounded-md transition-colors text-slate-500"><ChevronLeft size={20} /></button>
+                <button onClick={() => setViewDate(new Date())} className="px-3 text-sm font-bold text-slate-500 hover:bg-white rounded-md">今天</button>
+                <button onClick={() => changeMonth(1)} className="p-1.5 hover:bg-white rounded-md transition-colors text-slate-500"><ChevronRight size={20} /></button>
               </div>
             </div>
-            <div className="grid grid-cols-7 border-b border-slate-100">{["日", "一", "二", "三", "四", "五", "六"].map(d => (<div key={d} className="py-1 text-center text-[9px] font-bold text-slate-400">{d}</div>))}</div>
+            <div className="grid grid-cols-7 border-b border-slate-100">{["日", "一", "二", "三", "四", "五", "六"].map(d => (<div key={d} className="py-2 text-center text-xs font-bold text-slate-400">{d}</div>))}</div>
             <div className="grid grid-cols-7 bg-white">{renderCalendar()}</div>
-            <div className="py-1 px-3 bg-slate-50 border-t border-slate-100 text-[9px] text-slate-400 flex justify-center gap-4">
-              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-[#4F9D9D] flex items-center justify-center text-white"><Check size={8} strokeWidth={3} /></div><span>上課</span></div>
-              <div className="flex items-center gap-1"><div className="w-2.5 h-2.5 rounded-full bg-amber-100 border border-amber-200 flex items-center justify-center"><span className="text-[7px] text-amber-600 font-bold">$</span></div><span>繳費</span></div>
+            <div className="py-2 px-4 bg-slate-50 border-t border-slate-100 text-xs text-slate-400 flex justify-center gap-6">
+              <div className="flex items-center gap-1.5"><div className="w-4 h-4 rounded-full bg-[#4F9D9D] flex items-center justify-center text-white"><Check size={10} strokeWidth={3} /></div><span>上課</span></div>
+              <div className="flex items-center gap-1.5"><div className="w-4 h-4 rounded-full bg-amber-100 border border-amber-200 flex items-center justify-center"><span className="text-[9px] text-amber-600 font-bold">$</span></div><span>繳費</span></div>
             </div>
           </div>
         );
@@ -387,24 +391,24 @@
       const PaymentHistory = ({ payments, onDeletePayment }) => {
         return (
           <div className="flex-1 min-h-0 flex flex-col bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
-            <div className="bg-slate-50 px-3 py-2 border-b border-slate-100 flex justify-between items-center shrink-0">
-               <h3 className="font-bold text-slate-700 flex items-center gap-1.5 text-[10px] uppercase tracking-wider"><CreditCard size={12} />繳費紀錄</h3>
-               <span className="text-[9px] text-slate-400">捲動查看</span>
+            <div className="bg-slate-50 px-4 py-3 border-b border-slate-100 flex justify-between items-center shrink-0">
+               <h3 className="font-bold text-slate-700 flex items-center gap-2 text-sm uppercase tracking-wider"><CreditCard size={16} />繳費紀錄</h3>
+               <span className="text-xs text-slate-400">捲動查看</span>
             </div>
             <div className="overflow-y-auto p-0 scroll-smooth">
-              {payments.length === 0 ? (<div className="p-4 text-center text-slate-400 text-[10px]">尚無繳費紀錄</div>) : (
+              {payments.length === 0 ? (<div className="p-6 text-center text-slate-400 text-xs">尚無繳費紀錄</div>) : (
                 payments.map((payment) => (
-                  <div key={payment.id} className="px-3 py-2 border-b border-slate-50 last:border-0 flex justify-between items-center group hover:bg-slate-50 transition-colors">
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 shrink-0"><Banknote size={10} /></div>
+                  <div key={payment.id} className="px-4 py-3 border-b border-slate-50 last:border-0 flex justify-between items-center group hover:bg-slate-50 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 shrink-0"><Banknote size={16} /></div>
                       <div>
-                        <div className="font-bold text-slate-800 text-xs leading-none mb-0.5">{formatCurrency(payment.amount)}</div>
-                        <div className="text-[9px] text-slate-400 leading-none">{formatDate(payment.date)} • {getPaymentMethodLabel(payment.method)}</div>
+                        <div className="font-bold text-slate-800 text-base leading-none mb-1">{formatCurrency(payment.amount)}</div>
+                        <div className="text-xs text-slate-400 leading-none">{formatDate(payment.date)} • {getPaymentMethodLabel(payment.method)}</div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                        <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-1 py-0.5 rounded">+4</span>
-                        <button onClick={() => onDeletePayment(payment.id)} className="text-slate-300 hover:text-red-400 p-1.5"><Trash2 size={12} /></button>
+                    <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">+4</span>
+                        <button onClick={() => onDeletePayment(payment.id)} className="text-slate-300 hover:text-red-400 p-2"><Trash2 size={16} /></button>
                     </div>
                   </div>
                 ))
@@ -476,25 +480,25 @@
 
         return (
           <div className="h-screen bg-slate-50 text-slate-800 font-sans overflow-hidden flex flex-col">
-            <header className="bg-white px-4 py-2 shrink-0 z-20 shadow-sm border-b border-slate-100 h-[50px] flex items-center">
+            <header className="bg-white px-5 py-3 shrink-0 z-20 shadow-sm border-b border-slate-100 h-[64px] flex items-center">
               <div className="w-full max-w-md mx-auto flex justify-between items-center">
-                <div className="flex items-center gap-2 text-slate-800"><div className="bg-amber-500 p-1 rounded-lg text-white"><Guitar size={16} /></div><h1 className="font-bold text-sm tracking-tight">吉他課簽到</h1></div>
-                <button onClick={() => setIsSettingsOpen(true)} className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"><Settings size={18} /></button>
+                <div className="flex items-center gap-3 text-slate-800"><div className="bg-amber-500 p-1.5 rounded-xl text-white"><Guitar size={24} /></div><h1 className="font-bold text-xl tracking-tight">吉他課簽到</h1></div>
+                <button onClick={() => setIsSettingsOpen(true)} className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-full transition-colors"><Settings size={28} /></button>
               </div>
             </header>
-            <main className="flex-1 w-full max-w-md mx-auto p-2 flex flex-col gap-2 min-h-0">
-              <div className="bg-white rounded-xl px-3 py-2 shadow-sm border border-slate-100 flex justify-between items-center shrink-0">
-                <div className="flex items-center gap-2"><div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><User size={14} /></div><div className="font-bold text-xs text-slate-800">{data.teacherName}</div></div>
-                <div className="h-4 w-px bg-slate-100"></div>
-                <div className="flex items-center gap-2"><div className="text-right"><div className="font-bold text-xs text-slate-800">{data.studentName}</div></div><div className="w-6 h-6 rounded-full bg-amber-100 flex items-center justify-center text-amber-600"><User size={14} /></div></div>
+            <main className="flex-1 w-full max-w-md mx-auto p-3 flex flex-col gap-3 min-h-0">
+              <div className="bg-white rounded-xl px-4 py-3 shadow-sm border border-slate-100 flex justify-between items-center shrink-0">
+                <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><User size={20} /></div><div className="font-bold text-base text-slate-800">{data.teacherName}</div></div>
+                <div className="h-6 w-px bg-slate-100"></div>
+                <div className="flex items-center gap-3"><div className="text-right"><div className="font-bold text-base text-slate-800">{data.studentName}</div></div><div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-600"><User size={20} /></div></div>
               </div>
               <CalendarView data={data} viewDate={viewDate} setViewDate={setViewDate} onToggleLesson={toggleLessonOnDate} />
-              <div className="bg-white rounded-xl p-2 px-3 shadow-md shadow-slate-200/50 border border-slate-100 flex items-center justify-between shrink-0 h-14">
-                <div className="flex items-center gap-3">
-                    <div className="flex items-baseline gap-1"><span className={`text-2xl font-black ${data.credits <= 1 ? "text-amber-500" : "text-slate-800"}`}>{data.credits}</span><span className="text-xs text-slate-400 font-bold">/ 4</span></div>
-                    <div className={`px-2 py-0.5 rounded-full text-[9px] font-bold border flex items-center gap-1 ${getStatusColor(data.credits)}`}>{data.credits <= 0 ? "需繳費" : data.credits === 1 ? "剩1堂" : `剩 ${data.credits} 堂`}{data.credits <= 1 && <AlertTriangle size={8} />}</div>
+              <div className="bg-white rounded-xl p-3 px-4 shadow-md shadow-slate-200/50 border border-slate-100 flex items-center justify-between shrink-0 h-20">
+                <div className="flex items-center gap-4">
+                    <div className="flex items-baseline gap-1.5"><span className={`text-4xl font-black ${data.credits <= 1 ? "text-amber-500" : "text-slate-800"}`}>{data.credits}</span><span className="text-base text-slate-400 font-bold">/ 4</span></div>
+                    <div className={`px-3 py-1 rounded-full text-sm font-bold border flex items-center gap-1.5 ${getStatusColor(data.credits)}`}>{data.credits <= 0 ? "需繳費" : data.credits === 1 ? "剩1堂" : `剩 ${data.credits} 堂`}{data.credits <= 1 && <AlertTriangle size={14} />}</div>
                 </div>
-                <button onClick={openPayModal} className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 text-white rounded-lg active:scale-95 transition-all shadow-md shadow-amber-200 hover:bg-amber-600"><Banknote size={14} /><span className="font-bold text-xs">繳費續期</span></button>
+                <button onClick={openPayModal} className="flex items-center gap-2 px-4 py-2.5 bg-amber-500 text-white rounded-xl active:scale-95 transition-all shadow-md shadow-amber-200 hover:bg-amber-600"><Banknote size={18} /><span className="font-bold text-base">繳費續期</span></button>
               </div>
               <PaymentHistory payments={data.payments} onDeletePayment={deletePayment} />
             </main>
